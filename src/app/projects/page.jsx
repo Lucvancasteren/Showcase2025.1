@@ -10,14 +10,15 @@ export default function Projects() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [cursorPosition, setCursorPosition] = useState({ x: -100, y: -100 });
   const [isHovering, setIsHovering] = useState(false);
+  const [fontSize, setFontSize] = useState('7rem');
 
   useEffect(() => {
-    const updateCursorPosition = (e: MouseEvent) => {
+    const updateCursorPosition = (e) => {
       setCursorPosition({ x: e.clientX, y: e.clientY });
     };
 
-    const handleMouseOver = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
+    const handleMouseOver = (e) => {
+      const target = e.target;
       if (
         target.tagName === 'A' || 
         target.tagName === 'BUTTON' || 
@@ -41,6 +42,17 @@ export default function Projects() {
       document.removeEventListener('mouseover', handleMouseOver);
       document.removeEventListener('mouseout', handleMouseOut);
     };
+  }, []);
+
+  useEffect(() => {
+    setFontSize(window.innerWidth <= 768 ? '1.5rem' : '7rem');
+    
+    const handleResize = () => {
+      setFontSize(window.innerWidth <= 768 ? '1.5rem' : '7rem');
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const toggleMenu = () => {
@@ -571,7 +583,7 @@ export default function Projects() {
             style={{
               color: '#262626',
               fontFamily: "'Bruno Ace SC', cursive",
-              fontSize: window.innerWidth <= 768 ? '1.5rem' : '7rem',
+              fontSize: fontSize,
               margin: '0 0 1rem 0',
               textAlign: 'left',
               letterSpacing: '0.05em',

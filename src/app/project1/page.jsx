@@ -4,13 +4,14 @@ import { useRouter } from 'next/navigation';
 import { Terminal, ArrowUp, ArrowLeft, ArrowRight } from "lucide-react";
 import { useState, useEffect } from 'react';
 
-export default function Projects() {
+export default function Project1() {
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [cursorPosition, setCursorPosition] = useState({ x: -100, y: -100 });
   const [isHovering, setIsHovering] = useState(false);
   const [scrollPosition, setScrollPosition] = useState(0);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
   
   const projectImages = [
     "/afbeeldingen/parallax1.png",
@@ -39,12 +40,12 @@ export default function Projects() {
   };
 
   useEffect(() => {
-    const updateCursorPosition = (e: MouseEvent) => {
+    const updateCursorPosition = (e) => {
       setCursorPosition({ x: e.clientX, y: e.clientY });
     };
 
-    const handleMouseOver = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
+    const handleMouseOver = (e) => {
+      const target = e.target;
       if (
         target.tagName === 'A' || 
         target.tagName === 'BUTTON' || 
@@ -86,6 +87,18 @@ export default function Projects() {
 
     return () => clearInterval(interval);
   }, [projectImages.length]);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    checkMobile();
+
+    window.addEventListener('resize', checkMobile);
+
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   return (
     <>
@@ -836,7 +849,7 @@ export default function Projects() {
             style={{
               color: '#262626',
               fontFamily: "'Bruno Ace SC', cursive",
-              fontSize: window.innerWidth <= 768 ? '1.5rem' : '7rem',
+              fontSize: isMobile ? '1.5rem' : '7rem',
               margin: '0 0 1rem 0',
               textAlign: 'left',
               letterSpacing: '0.05em',

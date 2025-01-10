@@ -5,48 +5,6 @@ import { Terminal, ArrowUp } from "lucide-react";
 import "./styles.css";
 import { useRouter } from 'next/navigation';
 
-interface Styles {
-  container: React.CSSProperties;
-  statusLights: React.CSSProperties;
-  lightRed: React.CSSProperties;
-  lightYellow: React.CSSProperties;
-  lightGreen: React.CSSProperties;
-  video: React.CSSProperties;
-  alwaysVisibleText: React.CSSProperties;
-  searchBar: React.CSSProperties;
-  searchInput: React.CSSProperties;
-  menuButton: React.CSSProperties;
-  menu: React.CSSProperties;
-  bodyContainer: React.CSSProperties;
-  newContainer: React.CSSProperties;
-  textContainer: React.CSSProperties;
-  text: React.CSSProperties;
-  imageContainer: React.CSSProperties;
-  fullWidthImageWrapper: React.CSSProperties;
-  projectImage: React.CSSProperties;
-  footer: React.CSSProperties;
-  footerContent: React.CSSProperties;
-  footerText: React.CSSProperties;
-  footerLinks: React.CSSProperties;
-  footerLink: React.CSSProperties;
-  footerTitle: React.CSSProperties;
-  availableStatus: React.CSSProperties;
-  statusDot: React.CSSProperties;
-  availableText: React.CSSProperties;
-  lineContainer: React.CSSProperties;
-  line: React.CSSProperties;
-  lineGap: React.CSSProperties;
-  columnContainer: React.CSSProperties;
-  columnTitle: React.CSSProperties;
-  columnLinks: React.CSSProperties;
-  columnLink: React.CSSProperties;
-  ctaButton: React.CSSProperties;
-  textWithImage: React.CSSProperties;
-  inlineImage: React.CSSProperties;
-  scrollTopButton: React.CSSProperties;
-  rotatingArrow: React.CSSProperties;
-}
-
 export default function Home() {
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -99,12 +57,12 @@ export default function Home() {
   useEffect(() => {
     if (!shouldTrackCursor) return;
 
-    const updateCursorPosition = (e: MouseEvent) => {
+    const updateCursorPosition = (e) => {
       setCursorPosition({ x: e.clientX, y: e.clientY });
     };
 
-    const handleMouseOver = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
+    const handleMouseOver = (e) => {
+      const target = e.target;
       if (
         target.tagName === 'A' || 
         target.tagName === 'BUTTON' || 
@@ -192,7 +150,7 @@ export default function Home() {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       const command = searchInput.toLowerCase();
       if (command === "help") {
@@ -730,7 +688,7 @@ export default function Home() {
   );
 }
 
-const styles: Styles = {
+const styles = {
   container: {
     position: "relative",
     height: "100vh",
