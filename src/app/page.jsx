@@ -302,7 +302,7 @@ export default function Home() {
               }} />
             </div>
             <h1 style={{
-              color: '#262626',
+              color: '#959595',
               fontFamily: "'Bruno Ace SC', cursive",
               fontSize: 'clamp(2rem, 8vw, 6rem)',
               textAlign: 'center',
