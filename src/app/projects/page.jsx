@@ -11,6 +11,13 @@ export default function Projects() {
   const [cursorPosition, setCursorPosition] = useState({ x: -100, y: -100 });
   const [isHovering, setIsHovering] = useState(false);
   const [fontSize, setFontSize] = useState('7rem');
+  const [footerHackedText, setFooterHackedText] = useState('LET\'S CHAT');
+  const [isFooterHacking, setIsFooterHacking] = useState(false);
+  const [menuItemHackText, setMenuItemHackText] = useState('');
+  const [isMenuItemHacking, setIsMenuItemHacking] = useState(false);
+  const [hackedItems, setHackedItems] = useState({});
+  const [currentPath, setCurrentPath] = useState('');
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     const updateCursorPosition = (e) => {
@@ -45,14 +52,29 @@ export default function Projects() {
   }, []);
 
   useEffect(() => {
-    setFontSize(window.innerWidth <= 768 ? '1.5rem' : '7rem');
+    setFontSize(window.innerWidth <= 768 ? '3rem' : '7rem');
     
     const handleResize = () => {
-      setFontSize(window.innerWidth <= 768 ? '1.5rem' : '7rem');
+      setFontSize(window.innerWidth <= 768 ? '3rem' : '7rem');
     };
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    setCurrentPath(window.location.pathname);
+  }, []);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
   const toggleMenu = () => {
@@ -65,6 +87,73 @@ export default function Projects() {
       behavior: 'smooth'
     });
   };
+
+  const startFooterHack = () => {
+    if (isFooterHacking) return;
+    setIsFooterHacking(true);
+    
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*';
+    let hackInterval = setInterval(() => {
+      const randomText = Array(9)
+        .fill()
+        .map(() => characters[Math.floor(Math.random() * characters.length)])
+        .join('');
+      setFooterHackedText(randomText);
+    }, 50);
+
+    setTimeout(() => {
+      clearInterval(hackInterval);
+      setFooterHackedText('LET\'S CHAT');
+      setIsFooterHacking(false);
+    }, 250);
+  };
+
+  const stopFooterHack = () => {
+    if (!isFooterHacking) {
+      setFooterHackedText('LET\'S CHAT');
+    }
+  };
+
+  const startMenuItemHack = (originalText) => {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*';
+    let iterations = 0;
+    const maxIterations = 3;
+    
+    const hackInterval = setInterval(() => {
+      iterations++;
+      const randomText = Array(originalText.length)
+        .fill()
+        .map(() => characters[Math.floor(Math.random() * characters.length)])
+        .join('');
+      
+      setHackedItems(prev => ({
+        ...prev,
+        [originalText]: randomText
+      }));
+      
+      if (iterations >= maxIterations) {
+        clearInterval(hackInterval);
+        setHackedItems(prev => ({
+          ...prev,
+          [originalText]: originalText
+        }));
+      }
+    }, 100);
+  };
+
+  const getProjectImageStyle = (top, left, width, height, isMobile) => ({
+    position: isMobile ? 'relative' : 'absolute',
+    top: isMobile ? '200px' : `${top}px`,
+    left: isMobile ? '50%' : `${left}px`,
+    width: isMobile ? '80vw' : `${width}px`,
+    height: isMobile ? '80vw' : `${height}px`,
+    transform: isMobile ? 'translateX(-50%)' : 'none',
+    marginBottom: isMobile ? '1px' : '0',
+    zIndex: 1000,
+    transition: 'all 0.3s ease',
+    cursor: 'pointer',
+    filter: 'brightness(100%)',
+  });
 
   return (
     <>
@@ -81,13 +170,122 @@ export default function Projects() {
           transform: 'translate(-50%, -50%)',
           transition: 'width 0.3s, height 0.3s',
           pointerEvents: 'none',
-          zIndex: 9999,
+          zIndex: 9998,
         }}
       />
       
       <div>
         <div style={{
-          height: '120vh',
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          width: '2500px',
+          backgroundColor: 'rgba(0, 0, 0, 0.75)',
+          backgroundImage: `
+            linear-gradient(rgba(38, 38, 38, 0.3) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(38, 38, 38, 0.3) 1px, transparent 1px)
+          `,
+          backgroundSize: '50px 50px',
+          backgroundPosition: 'center center',
+          cursor: 'crosshair',
+          zIndex: 1,
+        }} />
+
+        <button 
+          style={{ 
+            position: "absolute",
+            top: "20px",
+            right: "20px",
+            backgroundColor: "#111111",
+            border: "none",
+            width: "60px",
+            height: "60px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            cursor: "pointer",
+            zIndex: 10000,
+            transition: "transform 0.3s ease, background-color 0.3s ease",
+          }} 
+          onClick={toggleMenu}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = "scale(1.1)";
+            e.currentTarget.style.backgroundColor = "#292929";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = "scale(1)";
+            e.currentTarget.style.backgroundColor = "#111111";
+          }}
+        >
+          {isMenuOpen ? (
+            <div className="menu-icon open">
+              <span className="line"></span>
+              <span className="line"></span>
+              <span className="line"></span>
+            </div>
+          ) : (
+            <Terminal size={40} color="white" />
+          )}
+        </button>
+
+        {isMenuOpen && (
+          <div className="fullscreen-menu" style={{
+            position: 'fixed',
+            top: 0,
+            right: 0,
+            width: isMobile ? '100vw' : '300px',
+            height: '100vh',
+            backgroundColor: 'black',
+            zIndex: 9999,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+            <ul className="menu-list">
+              {[
+                { text: 'home', path: '/' },
+                { text: 'about', path: '/about' },
+                { text: 'projects', path: '/projects' },
+                { text: 'contact', path: '/contact' }
+              ].map((item) => (
+                <li 
+                  key={item.text}
+                  className="menu-item" 
+                  onClick={() => {
+                    router.push(item.path);
+                    setIsMenuOpen(false);
+                  }}
+                  onMouseEnter={() => !isMobile && startMenuItemHack(item.text)}
+                  style={{ 
+                    fontSize: '18px',
+                    color: '#959595',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px'
+                  }}
+                >
+                  {hackedItems[item.text] || item.text}
+                  {currentPath === item.path && (
+                    <span 
+                      style={{
+                        width: '6px',
+                        height: '6px',
+                        backgroundColor: '#959595',
+                        borderRadius: '50%',
+                        display: 'inline-block'
+                      }}
+                    />
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        <div style={{
+          height: '100vh',
           width: '100%',
           position: 'relative',
           backgroundColor: '#000000',
@@ -106,39 +304,34 @@ export default function Projects() {
         }} className="hide-scrollbar">
           <div style={{
             position: 'relative',
+            display: isMobile ? 'none' : 'block',
           }}>
             <Link href="/project1">
               <img 
                 src="/afbeeldingen/eindhoven.png"
                 alt="Logo"
                 style={{
-                  position: 'absolute',
-                  top: '200px',
-                  left: '300px',
-                  width: '400px',
-                  height: '400px',
+                  ...getProjectImageStyle(200, 300, 400, 400, isMobile),
+                  filter: isMobile ? 'brightness(50%)' : 'brightness(100%)',
                   zIndex: 1000,
-                  transition: 'all 0.3s ease',
-                  transform: 'scale(1)',
-                  cursor: 'pointer',
-                  filter: 'brightness(100%)',
                 }}
                 className="first-project-image project-image"
-                onMouseEnter={(e) => {
+                onMouseEnter={!isMobile ? (e) => {
                   e.currentTarget.style.transform = 'scale(1.1)';
                   e.currentTarget.style.filter = 'brightness(20%)';
                   e.currentTarget.nextElementSibling?.classList.add('visible');
-                }}
-                onMouseLeave={(e) => {
+                } : undefined}
+                onMouseLeave={!isMobile ? (e) => {
                   e.currentTarget.style.transform = 'scale(1)';
                   e.currentTarget.style.filter = 'brightness(100%)';
                   e.currentTarget.nextElementSibling?.classList.remove('visible');
-                }}
+                } : undefined}
               />
               <div style={{
                 position: 'absolute',
                 top: '350px',
                 left: '300px',
+                transform: 'none',
                 width: '400px',
                 textAlign: 'center',
                 color: 'white',
@@ -146,6 +339,7 @@ export default function Projects() {
                 opacity: 0,
                 transition: 'opacity 0.3s ease',
                 fontFamily: "'Bruno Ace SC', cursive",
+                display: isMobile ? 'none' : 'block',
               }} className="hover-text">
                 <h2 style={{ fontSize: '2.5rem', margin: '0' }}>Project Titel</h2>
                 <p style={{ fontSize: '1.2rem', marginTop: '1rem' }}>Projectbeschrijving hier</p>
@@ -155,22 +349,12 @@ export default function Projects() {
 
           <div style={{
             position: 'relative',
+            display: isMobile ? 'none' : 'block',
           }}>
             <img 
               src="/afbeeldingen/eindhoven.png"
               alt="Logo"
-              style={{
-                position: 'absolute',
-                top: '700px',
-                left: '800px',
-                width: '300px',
-                height: '300px',
-                zIndex: 1000,
-                transition: 'all 0.3s ease',
-                transform: 'scale(1)',
-                cursor: 'pointer',
-                filter: 'brightness(100%)',
-              }}
+              style={getProjectImageStyle(700, 800, 300, 300, isMobile)}
               className="second-project-image project-image"
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = 'scale(1.1)';
@@ -184,16 +368,18 @@ export default function Projects() {
               }}
             />
             <div style={{
-              position: 'absolute',
-              top: '800px',
-              left: '800px',
-              width: '300px',
+              position: isMobile ? 'relative' : 'absolute',
+              top: isMobile ? '0' : '800px',
+              left: isMobile ? '50%' : '800px',
+              transform: isMobile ? 'translateX(-50%)' : 'none',
+              width: isMobile ? '80vw' : '300px',
               textAlign: 'center',
               color: 'white',
               zIndex: 1001,
               opacity: 0,
               transition: 'opacity 0.3s ease',
               fontFamily: "'Bruno Ace SC', cursive",
+              marginTop: isMobile ? '10px' : '0',
             }} className="hover-text">
               <h2 style={{ fontSize: '2.5rem', margin: '0' }}>Project Titel 2</h2>
               <p style={{ fontSize: '1.2rem', marginTop: '1rem' }}>Projectbeschrijving hier</p>
@@ -202,22 +388,12 @@ export default function Projects() {
 
           <div style={{
             position: 'relative',
+            display: isMobile ? 'none' : 'block',
           }}>
             <img 
               src="/afbeeldingen/eindhoven.png"
               alt="Logo"
-              style={{
-                position: 'absolute',
-                top: '300px',
-                left: '1500px',
-                width: '500px',
-                height: '500px',
-                zIndex: 1000,
-                transition: 'all 0.3s ease',
-                transform: 'scale(1)',
-                cursor: 'pointer',
-                filter: 'brightness(100%)',
-              }}
+              style={getProjectImageStyle(300, 1500, 500, 500, isMobile)}
               className="third-project-image project-image"
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = 'scale(1.1)';
@@ -231,16 +407,18 @@ export default function Projects() {
               }}
             />
             <div style={{
-              position: 'absolute',
-              top: '400px',
-              left: '1500px',
-              width: '500px',
+              position: isMobile ? 'relative' : 'absolute',
+              top: isMobile ? '0' : '400px',
+              left: isMobile ? '50%' : '1500px',
+              transform: isMobile ? 'translateX(-50%)' : 'none',
+              width: isMobile ? '80vw' : '500px',
               textAlign: 'center',
               color: 'white',
               zIndex: 1001,
               opacity: 0,
               transition: 'opacity 0.3s ease',
               fontFamily: "'Bruno Ace SC', cursive",
+              marginTop: isMobile ? '10px' : '0',
             }} className="hover-text">
               <h2 style={{ fontSize: '2.5rem', margin: '0' }}>Project Titel 3</h2>
               <p style={{ fontSize: '1.2rem', marginTop: '1rem' }}>Projectbeschrijving hier</p>
@@ -265,47 +443,12 @@ export default function Projects() {
             zIndex: 1,
           }} />
 
-          <button 
-            className="menu-button"
-            style={{ 
-              position: "absolute",
-              top: "20px",
-              right: "20px",
-              backgroundColor: "#111111",
-              border: "none",
-              width: "60px",
-              height: "60px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              cursor: "pointer",
-              zIndex: 1000,
-            }} 
-            onClick={toggleMenu}
-          >
-            <Terminal size={40} color="white" />
-          </button>
-
-          {isMenuOpen && (
-            <div className="fullscreen-menu">
-              <ul className="menu-list">
-                <li className="menu-item" onClick={() => router.push('/')}>home</li>
-                <li className="menu-item" onClick={() => router.push('/about')}>about</li>
-                <li className="menu-item" onClick={() => {
-                  router.push('/projects');
-                  setIsMenuOpen(false);
-                }}>projects</li>
-                <li className="menu-item" onClick={() => router.push('/contact')}>contact</li>
-              </ul>
-            </div>
-          )}
-
           <div style={{
             position: 'absolute',
             top: '20%',
             left: '900px',
             transform: 'translateY(-50%)',
-            color: '#292929',
+            color: '#959595',
             fontFamily: "'Bruno Ace SC', cursive",
             fontSize: '1.2rem',
             display: 'flex',
@@ -317,7 +460,7 @@ export default function Projects() {
             <div style={{
               width: '40px',
               height: '20px',
-              border: '2px solid #292929',
+              border: '2px solid #959595',
               borderRadius: '10px',
               position: 'relative',
               overflow: 'hidden',
@@ -326,7 +469,7 @@ export default function Projects() {
                 position: 'absolute',
                 width: '4px',
                 height: '4px',
-                backgroundColor: '#292929',
+                backgroundColor: '#959595',
                 borderRadius: '50%',
                 top: '50%',
                 transform: 'translateY(-50%)',
@@ -335,196 +478,71 @@ export default function Projects() {
             </div>
           </div>
 
-          <style jsx>{`
-            @keyframes scrollDot {
-              0% {
-                left: 4px;
-              }
-              40% {
-                left: 32px;
-              }
-              45% {
-                left: 32px;
-              }
-              46% {
-                left: 4px;
-              }
-              100% {
-                left: 4px;
-              }
-            }
-
-            @media (hover: none) and (pointer: coarse) {
-              img:hover {
-                transform: scale(1) !important;
-                filter: brightness(100%) !important;
-              }
-              
-              .hover-text {
-                display: block !important;
-                opacity: 1 !important;
-              }
-
-              :global(.first-project-image) {
-                left: 50px !important;
-                width: 300px !important;
-                height: 300px !important;
-              }
-
-              :global(.second-project-image) {
-                left: 400px !important;
-                top: 200px !important;
-                width: 300px !important;
-                height: 300px !important;
-              }
-
-              :global(.third-project-image) {
-                left: 750px !important;
-                top: 200px !important;
-                width: 300px !important;
-                height: 300px !important;
-              }
-
-              :global(.scroll-indicator) {
-                left: 50px !important;
-              }
-
-              :global(.first-project-image),
-              :global(.second-project-image),
-              :global(.third-project-image) {
-                filter: brightness(20%) !important;
-              }
-
-              :global(.first-project-image + .hover-text) {
-                top: 300px !important;
-                left: 50px !important;
-                width: 300px !important;
-              }
-
-              :global(.second-project-image + .hover-text) {
-                top: 300px !important;
-                left: 400px !important;
-                width: 300px !important;
-              }
-
-              :global(.third-project-image + .hover-text) {
-                top: 300px !important;
-                left: 750px !important;
-                width: 300px !important;
-              }
-
-              :global(.first-project-image + .hover-text),
-              :global(.second-project-image + .hover-text),
-              :global(.third-project-image + .hover-text) {
-                h2 {
-                  font-size: 1.5rem !important;
-                }
-                
-                p {
-                  font-size: 1rem !important;
-                  margin-top: 0.5rem !important;
-                }
-              }
-
-              :global(.fullscreen-menu) {
-                position: fixed !important;
-                top: 0 !important;
-                left: 0 !important;
-                width: 100vw !important;
-                height: 100vh !important;
-                background-color: black !important;
-                z-index: 1500 !important;
-                display: flex !important;
-                justify-content: center !important;
-                align-items: center !important;
-              }
-
-              :global(.menu-button) {
-                z-index: 2000 !important;
-              }
-
-              :global(.fullscreen-menu ~ *:not(.menu-button):not(.fullscreen-menu)) {
-                display: none !important;
-              }
-            }
-
-            .neon-text {
-              text-shadow: none;
-              transition: all 0.3s ease !important;
-            }
-
-            .neon-text:hover {
-              color: #fff !important;
-              text-shadow: 
-                0 0 5px #fff,
-                0 0 10px #fff,
-                0 0 20px #fff,
-                0 0 40px #0ff,
-                0 0 80px #0ff,
-                0 0 90px #0ff,
-                0 0 100px #0ff,
-                0 0 150px #0ff;
-              animation: glitch-neon 0.2s ease-in-out infinite alternate;
-            }
-
-            @keyframes glitch-neon {
-              0% {
-                opacity: 1;
-                transform: skew(-2deg);
-              }
-              25% {
-                opacity: 0.8;
-                transform: skew(2deg);
-              }
-              50% {
-                opacity: 0.9;
-                transform: skew(-1deg);
-              }
-              75% {
-                opacity: 0.7;
-                transform: skew(3deg);
-              }
-              100% {
-                opacity: 1;
-                transform: skew(0deg);
-              }
+          <style jsx global>{`
+            .scroll-top-button {
+              position: relative;
+              background: transparent;
+              border: 2px solid #959595;
+              border-radius: 50%;
+              width: 50px;
+              height: 50px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              cursor: pointer;
+              transition: all 0.3s ease;
+              overflow: hidden;
             }
 
             .scroll-top-button:hover {
-              background-color: #262626;
+              background-color: #959595;
               transform: scale(1.1);
-              box-shadow: 0 0 15px rgba(41, 41, 41, 0.3);
+              box-shadow: 0 0 15px rgba(149, 149, 149, 0.3);
             }
 
             .scroll-top-button:hover .arrow-icon {
               color: white !important;
-              animation: orbitEffectVertical 1.2s infinite;
+              animation: flightPath 1.5s infinite;
+            }
+
+            @keyframes flightPath {
+              0% {
+                transform: translate(-50%, -50%);
+                opacity: 1;
+              }
+              50% {
+                transform: translate(-50%, -150%);
+                opacity: 0;
+              }
+              51% {
+                transform: translate(-50%, 50%);
+                opacity: 0;
+              }
+              100% {
+                transform: translate(-50%, -50%);
+                opacity: 1;
+              }
             }
 
             .arrow-icon {
               transition: all 0.3s ease;
             }
 
-            @keyframes orbitEffectVertical {
-              0% {
-                transform: translateY(0);
-                opacity: 1;
+            @media screen and (max-width: 768px) {
+              .scroll-top-button:hover .arrow-icon {
+                animation: none;
               }
-              20% {
-                transform: translateY(-20px);
-                opacity: 0;
+            }
+
+            @keyframes scrollDot {
+              0% {
+                left: 10%;
               }
               50% {
-                transform: translateY(20px);
-                opacity: 0;
-              }
-              80% {
-                transform: translateY(0);
-                opacity: 1;
+                left: 90%;
               }
               100% {
-                transform: translateY(0);
-                opacity: 1;
+                left: 10%;
               }
             }
           `}</style>
@@ -534,7 +552,7 @@ export default function Projects() {
       <footer style={{
         width: '100%',
         backgroundColor: 'black',
-        borderTop: '1px solid #262626',
+        borderTop: '1px solid #959595',
         padding: '2rem 0',
         marginTop: 'auto',
         zIndex: 2,
@@ -556,32 +574,12 @@ export default function Projects() {
           left: '-13%',
           backgroundColor: 'transparent'
         }} className="footer-content-mobile">
-          <button
-            onClick={scrollToTop}
-            style={{
-              position: 'absolute',
-              right: '1rem',
-              bottom: '1rem',
-              background: 'transparent',
-              border: '2px solid #262626',
-              borderRadius: '50%',
-              width: '50px',
-              height: '50px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'pointer',
-              transition: 'all 0.3s ease',
-              overflow: 'hidden',
-            }}
-            className="scroll-top-button"
-          >
-            <ArrowUp size={24} color="#262626" className="arrow-icon" />
-          </button>
           <h2 
             onClick={() => router.push('/contact')}
+            onMouseEnter={startFooterHack}
+            onMouseLeave={stopFooterHack}
             style={{
-              color: '#262626',
+              color: '#959595',
               fontFamily: "'Bruno Ace SC', cursive",
               fontSize: fontSize,
               margin: '0 0 1rem 0',
@@ -589,25 +587,69 @@ export default function Projects() {
               letterSpacing: '0.05em',
               cursor: 'pointer',
               transition: 'all 0.3s ease',
+              whiteSpace: 'nowrap',
             }} 
-            className="neon-text"
+            className="neon-text footer-title-mobile"
           >
-            LET'S CHAT
+            {footerHackedText}
           </h2>
           <div style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '0.5rem',
+            justifyContent: 'space-between',
+            width: '100%',
             marginTop: '1rem',
             marginBottom: '1rem',
+            paddingRight: isMobile ? '10%' : '0',
           }}>
-            <div className="status-dot"></div>
-            <span style={{
-              color: '#262626',
-              fontFamily: 'monospace',
-              fontSize: '1rem',
-            }}>Available</span>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+            }}>
+              <div className="status-dot"></div>
+              <span style={{
+                color: '#959595',
+                fontFamily: 'monospace',
+                fontSize: '1rem',
+              }}>Available</span>
+            </div>
+            
+            {isMobile && (
+              <button
+                onClick={scrollToTop}
+                className="scroll-top-button"
+                style={{
+                  position: 'relative',
+                  background: 'transparent',
+                  border: '2px solid #959595',
+                  borderRadius: '50%',
+                  width: '50px',
+                  height: '50px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease',
+                  overflow: 'hidden',
+                  paddingRight: '2rem',
+                }}
+              >
+                <ArrowUp 
+                  size={24} 
+                  color="#959595"
+                  className="arrow-icon"
+                  style={{
+                    position: 'absolute',
+                    left: '50%',
+                    top: '50%',
+                    transform: 'translate(-50%, -50%)'
+                  }}
+                />
+              </button>
+            )}
           </div>
+          
           <div style={{
             display: 'flex',
             alignItems: 'flex-start',
@@ -623,12 +665,12 @@ export default function Projects() {
             }}>
               <div style={{
                 height: '1px',
-                backgroundColor: '#262626',
+                backgroundColor: '#959595',
                 width: '100%',
                 marginBottom: '1rem',
               }}></div>
               <h3 style={{
-                color: '#262626',
+                color: '#959595',
                 fontFamily: 'monospace',
                 fontSize: '1.2rem',
                 margin: '0.2rem 0',
@@ -639,11 +681,11 @@ export default function Projects() {
                 gap: '0.5rem',
               }}>
                 <a 
-                  href="https://www.instagram.com/luc_vancasteren" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
+                  href="https://nl.linkedin.com/in/luc-van-casteren-bb0823345" 
+                  target="_blank"
+                  rel="noopener noreferrer"
                   style={{
-                    color: '#262626',
+                    color: '#959595',
                     textDecoration: 'none',
                     fontFamily: 'monospace',
                     fontSize: '1rem',
@@ -651,16 +693,8 @@ export default function Projects() {
                     cursor: 'pointer',
                   }}
                 >
-                  Instagram
+                  LinkedIn
                 </a>
-                <a href="#" style={{
-                  color: '#262626',
-                  textDecoration: 'none',
-                  fontFamily: 'monospace',
-                  fontSize: '1rem',
-                  transition: 'opacity 0.2s',
-                  cursor: 'pointer',
-                }}>LinkedIn</a>
               </div>
             </div>
             <div style={{ width: '50px' }}></div>
@@ -673,12 +707,12 @@ export default function Projects() {
             }}>
               <div style={{
                 height: '1px',
-                backgroundColor: '#262626',
+                backgroundColor: '#959595',
                 width: '100%',
                 marginBottom: '1rem',
               }}></div>
               <h3 style={{
-                color: '#262626',
+                color: '#959595',
                 fontFamily: 'monospace',
                 fontSize: '1.2rem',
                 margin: '0.2rem 0',
@@ -688,18 +722,10 @@ export default function Projects() {
                 flexDirection: 'column',
                 gap: '0.5rem',
               }}>
-                <a href="#" style={{
-                  color: '#262626',
-                  textDecoration: 'none',
-                  fontFamily: 'monospace',
-                  fontSize: '1rem',
-                  transition: 'opacity 0.2s',
-                  cursor: 'pointer',
-                }}>Phone</a>
                 <a 
                   href="mailto:luc1708@hotmail.com" 
                   style={{
-                    color: '#262626',
+                    color: '#959595',
                     textDecoration: 'none',
                     fontFamily: 'monospace',
                     fontSize: '1rem',
@@ -712,6 +738,42 @@ export default function Projects() {
               </div>
             </div>
           </div>
+          
+          {!isMobile && (
+            <button
+              onClick={scrollToTop}
+              className="scroll-top-button"
+              style={{
+                position: 'absolute',
+                top: '18.5rem',
+                right: '2rem',
+                background: 'transparent',
+                border: '2px solid #959595',
+                borderRadius: '50%',
+                width: '50px',
+                height: '50px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                overflow: 'hidden',
+                zIndex: 1000,
+              }}
+            >
+              <ArrowUp 
+                size={24} 
+                color="#959595"
+                className="arrow-icon"
+                style={{
+                  position: 'absolute',
+                  left: '50%',
+                  top: '50%',
+                  transform: 'translate(-50%, -50%)'
+                }}
+              />
+            </button>
+          )}
         </div>
       </footer>
     </>

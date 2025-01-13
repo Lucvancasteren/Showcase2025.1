@@ -68,7 +68,7 @@
     width: 100vw !important;
     height: 100vh !important;
     background-color: black !important;
-    border: 0px #262626 !important;
+    border: 0px #959595 !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
@@ -83,40 +83,21 @@
     font-size: 24px;
     width: 80%; /* Voeg een breedte toe om ruimte aan de zijkanten te hebben */
     max-width: 300px; /* Maximum breedte voor grotere schermen */
-    border: 0px #4CAF50;
+    border: 0px #959595;
     font-family: monospace;
   }
   
   .menu-item {
     margin: 20px 0;
     cursor: none !important;
-    color: #262626;
+    color: #959595;
     position: relative;
     width: fit-content;
+    transition: none;
   }
   
-  /* Underline animatie voor menu items */
-  .menu-item::after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 2px;
-    bottom: -2px;
-    left: 0;
-    background-color: #262626;
-    transition: width 0.3s ease-in-out;
-  }
-
-  .menu-item:hover::after {
-    width: 100%;
-    left: 0;
-  }
-
-  .menu-item:not(:hover)::after {
-    right: 0;
-    left: auto;
-    width: 0;
-    transition: width 0.3s ease-in-out;
+  .menu-item:hover {
+    opacity: 0.8;
   }
 
   @media (min-width: 768px) {
@@ -127,7 +108,7 @@
       right: 20px !important;
       width: 300px !important;
       height: auto !important;
-      border: 2px solid #262626 !important;
+      border: 2px solid #959595 !important;
     }
   
     .menu-list {
@@ -555,4 +536,75 @@ textarea {
   animation: flyUpAndDown 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
+@media (hover: none), 
+       (pointer: coarse), 
+       (max-width: 768px) {
+  .cursor-dot,
+  .hide-on-mobile {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    position: absolute !important;
+    left: -9999px !important;
+  }
 
+  * {
+    cursor: auto !important;
+  }
+}
+
+@media (any-pointer: coarse) {
+  .cursor-dot,
+  .hide-on-mobile {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    position: absolute !important;
+    left: -9999px !important;
+  }
+
+  * {
+    cursor: auto !important;
+  }
+}
+
+@media (pointer: coarse) {
+  .cursor-dot {
+    display: none !important;
+  }
+}
+
+/* Extra specifieke regels voor touch devices */
+@supports (-webkit-touch-callout: none) {
+  .cursor-dot {
+    display: none !important;
+  }
+}
+
+/* Force touch specifieke regel */
+@media (force-enabled: true), 
+       (-webkit-force-enabled: true) {
+  .cursor-dot {
+    display: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .video-container {
+    left: 43% !important;
+    transform: translate(-48%, -50%) !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .scroll-top-button {
+    left: 1rem !important;
+    right: auto !important;
+  }
+}

@@ -11,6 +11,9 @@ export default function Contact() {
   const [isHovering, setIsHovering] = useState(false);
   const [currentGreetingIndex, setCurrentGreetingIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const [hackedItems, setHackedItems] = useState({});
+  const currentPath = '/contact';
+  const [footerHackedText, setFooterHackedText] = useState("LET'S CHAT");
 
   const greetings = [
     "HALLO", // Nederlands
@@ -109,6 +112,53 @@ export default function Contact() {
     });
   };
 
+  const startMenuItemHack = (text) => {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    let iterations = 0;
+    const maxIterations = 3;
+    const interval = setInterval(() => {
+      setHackedItems(prev => ({
+        ...prev,
+        [text]: text
+          .split('')
+          .map((char, index) => {
+            if (char === ' ') return ' ';
+            return chars[Math.floor(Math.random() * chars.length)];
+          })
+          .join('')
+      }));
+      iterations++;
+      if (iterations >= maxIterations) {
+        clearInterval(interval);
+        setHackedItems(prev => ({
+          ...prev,
+          [text]: text
+        }));
+      }
+    }, 50);
+  };
+
+  const startFooterHack = () => {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*';
+    let iterations = 0;
+    const maxIterations = 3;
+    
+    const hackInterval = setInterval(() => {
+      iterations++;
+      const randomText = Array("LET'S CHAT".length)
+        .fill()
+        .map(() => characters[Math.floor(Math.random() * characters.length)])
+        .join('');
+      
+      setFooterHackedText(randomText);
+      
+      if (iterations >= maxIterations) {
+        clearInterval(hackInterval);
+        setFooterHackedText("LET'S CHAT");
+      }
+    }, 50);
+  };
+
   return (
     <>
       <div>
@@ -147,7 +197,7 @@ export default function Contact() {
             display: 'inline-block',
             animation: 'scroll 240s linear infinite',
             transform: 'translateX(-50%)',
-            color: '#292929',
+            color: '#959595',
             fontSize: '14rem',
             fontFamily: "'Bruno Ace SC', cursive",
           }} 
@@ -196,66 +246,24 @@ export default function Contact() {
           <div style={{
             width: '100%',
             height: '1px',
-            backgroundColor: '#292929',
-            marginTop: '50px',
+            backgroundColor: '#959595',
+
           }} />
           <div style={{
             position: 'absolute',
             left: '30px',
             marginTop: '30px',
-            color: '#292929',
+            color: '#959595',
             fontSize: '14px',
             fontFamily: "'Bruno Ace SC', cursive",
           }}>
-            call me
-          </div>
-          <div 
-            className="contact-number"
-            style={{
-              position: 'absolute',
-              left: isMobile ? '15px' : '100px',
-              marginTop: '100px',
-              color: '#292929',
-              fontSize: isMobile ? '6rem' : '120px',
-              fontFamily: "'Bruno Ace SC', cursive",
-              display: 'flex',
-              alignItems: 'center',
-              gap: isMobile ? '14px' : '28px',
-            }}
-          >
-            <div className="animated-dot" style={{
-              width: '10px',
-              height: '10px',
-              backgroundColor: '#292929',
-              borderRadius: '50%',
-              position: 'relative',
-              transition: 'transform 0.3s ease',
-              cursor: 'pointer',
-              display: isMobile ? 'none' : 'block',
-            }} />
-            <span>(+31) 630 80 44 79</span>
-          </div>
-          <div style={{
-            width: '100%',
-            height: '1px',
-            backgroundColor: '#292929',
-            marginTop: '250px',
-          }} />
-          <div style={{
-            position: 'absolute',
-            left: '30px',
-            marginTop: '30px',
-            color: '#292929',
-            fontSize: '14px',
-            fontFamily: "'Bruno Ace SC', cursive",
-          }}>
-            email us
+            email me
           </div>
           <div style={{
             position: 'absolute',
             left: isMobile ? '15px' : '100px',
             marginTop: '100px',
-            color: '#292929',
+            color: '#959595',
             fontSize: isMobile ? '3rem' : '48px',
             fontFamily: "'Bruno Ace SC', cursive",
             display: 'flex',
@@ -276,7 +284,7 @@ export default function Contact() {
               <div style={{
                 width: '10px',
                 height: '10px',
-                backgroundColor: '#292929',
+                backgroundColor: '#959595',
                 borderRadius: '50%',
                 position: 'relative',
                 transition: 'transform 0.3s ease',
@@ -291,7 +299,7 @@ export default function Contact() {
         </div>
 
         <div style={{
-          height: '165vh',
+          height: '140vh',
           width: '100%',
           position: 'relative',
           backgroundColor: '#000000',
@@ -339,22 +347,69 @@ export default function Contact() {
               alignItems: "center",
               cursor: "pointer",
               zIndex: 1000,
+              transition: "transform 0.3s ease, background-color 0.3s ease",
             }} 
             onClick={toggleMenu}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = "scale(1.1)";
+              e.currentTarget.style.backgroundColor = "#292929";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "scale(1)";
+              e.currentTarget.style.backgroundColor = "#111111";
+            }}
           >
-            <Terminal size={40} color="white" />
+            {isMenuOpen ? (
+              <div className="menu-icon open">
+                <span className="line"></span>
+                <span className="line"></span>
+                <span className="line"></span>
+              </div>
+            ) : (
+              <Terminal size={40} color="white" />
+            )}
           </button>
 
           {isMenuOpen && (
             <div className="fullscreen-menu">
               <ul className="menu-list">
-                <li className="menu-item" onClick={() => router.push('/')}>home</li>
-                <li className="menu-item" onClick={() => router.push('/about')}>about</li>
-                <li className="menu-item" onClick={() => {
-                  router.push('/projects');
-                  setIsMenuOpen(false);
-                }}>projects</li>
-                <li className="menu-item" onClick={() => router.push('/contact')}>contact</li>
+                {[
+                  { text: 'home', path: '/' },
+                  { text: 'about', path: '/about' },
+                  { text: 'projects', path: '/projects' },
+                  { text: 'contact', path: '/contact' }
+                ].map((item) => (
+                  <li 
+                    key={item.text}
+                    className="menu-item" 
+                    onClick={() => {
+                      router.push(item.path);
+                      setIsMenuOpen(false);
+                    }}
+                    onMouseEnter={() => !isMobile && startMenuItemHack(item.text)}
+                    style={{ 
+                      fontSize: '24px',
+                      color: '#959595',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '10px',
+                      fontFamily: 'monospace'
+                    }}
+                  >
+                    {hackedItems[item.text] || item.text}
+                    {currentPath === item.path && (
+                      <span 
+                        style={{
+                          width: '6px',
+                          height: '6px',
+                          backgroundColor: '#959595',
+                          borderRadius: '50%',
+                          display: 'inline-block'
+                        }}
+                      />
+                    )}
+                  </li>
+                ))}
               </ul>
             </div>
           )}
@@ -396,7 +451,7 @@ export default function Contact() {
               right: 1rem !important;
               bottom: 1rem !important;
               background: transparent;
-              border: 2px solid #262626;
+              border: 2px solid #959595;
               border-radius: 50%;
               width: 50px;
               height: 50px;
@@ -404,16 +459,41 @@ export default function Contact() {
               align-items: center;
               justify-content: center;
               cursor: pointer;
-              transition: all 0.3s ease;
             }
 
-            .scroll-top-button:hover {
-              background: #262626;
-              transform: translateY(-5px);
+            .scroll-top-button svg {
+              transition: all 0.5s cubic-bezier(0.68, -0.6, 0.32, 1.6);
             }
 
             .scroll-top-button:hover svg {
-              color: black !important;
+              animation: flyAroundWorld 2s cubic-bezier(0.68, -0.6, 0.32, 1.6) infinite;
+            }
+
+            @keyframes flyAroundWorld {
+              0% {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 1;
+              }
+              40% {
+                transform: translate(0, -20px) rotate(-5deg);
+                opacity: 0.3;
+              }
+              50% {
+                transform: translate(0, 20px) rotate(-5deg);
+                opacity: 0;
+              }
+              60% {
+                transform: translate(0, 10px) rotate(0deg);
+                opacity: 0.3;
+              }
+              100% {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 1;
+              }
+            }
+
+            .scroll-top-button:hover svg {
+              color: #959595 !important;
             }
 
             @keyframes scroll {
@@ -552,22 +632,20 @@ export default function Contact() {
               font-size: inherit !important;
             }
 
-            a[href^="mailto"] {
+            /* Alleen voor de grote email link */
+            .contact-email a[href^="mailto"] {
               font-size: 80px !important;
             }
 
             @media (max-width: 768px) {
-              .contact-number {
+              .contact-email a[href^="mailto"] {
                 font-size: 20px !important;
               }
-              
-              .contact-number span {
-                font-size: inherit !important;
-              }
+            }
 
-              a[href^="mailto"] {
-                font-size: 20px !important;
-              }
+            /* Reset voor andere mailto links */
+            a[href^="mailto"] {
+              font-size: inherit;
             }
 
             /* Desktop stijlen */
@@ -590,6 +668,74 @@ export default function Contact() {
                 display: block !important; /* Toon break alleen op mobiel */
               }
             }
+
+            .fullscreen-menu {
+              position: fixed;
+              top: 0;
+              right: 0;
+              width: ${isMobile ? '100vw' : '300px'};
+              height: 140px;
+              background-color: black;
+              z-index: 9999;
+              display: flex;
+              justify-content: flex-start;
+              align-items: center;
+              padding-left: 30px;
+              padding-top: 10px;
+            }
+
+            .menu-list {
+              list-style: none;
+              padding: 0 0 10px 0;
+              margin: 0;
+              width: 100%;
+              display: flex;
+              flex-direction: column;
+              gap: 10px;
+            }
+
+            .menu-item {
+              opacity: 1 !important;
+              transition: opacity 0.3s ease;
+              font-size: 18px !important;
+              font-family: monospace !important;
+              margin: 0 !important;
+              color: #959595 !important;
+            }
+
+            .menu-item:hover {
+              opacity: 0.6 !important;
+            }
+
+            .menu-icon {
+              width: 30px;
+              height: 20px;
+              position: relative;
+              display: flex;
+              flex-direction: column;
+              justify-content: space-between;
+            }
+
+            .menu-icon .line {
+              display: block;
+              height: 2px;
+              background-color: white;
+              transition: all 0.4s ease-in-out;
+              transform-origin: center;
+              width: 100%;
+            }
+
+            .menu-icon.open .line:first-child {
+              transform: translateY(9px) rotate(45deg);
+            }
+
+            .menu-icon.open .line:nth-child(2) {
+              opacity: 0;
+            }
+
+            .menu-icon.open .line:last-child {
+              transform: translateY(-9px) rotate(-45deg);
+            }
           `}</style>
         </div>
       </div>
@@ -597,7 +743,7 @@ export default function Contact() {
       <footer style={{
         width: '100%',
         backgroundColor: 'black',
-        borderTop: '1px solid #262626',
+        borderTop: '1px solid #959595',
         padding: '2rem 0',
         marginTop: 'auto',
         zIndex: 2,
@@ -626,7 +772,7 @@ export default function Contact() {
               right: '1rem',
               bottom: '1rem',
               background: 'transparent',
-              border: '2px solid #262626',
+              border: '2px solid #959595',
               borderRadius: '50%',
               width: '50px',
               height: '50px',
@@ -638,17 +784,22 @@ export default function Contact() {
             }}
             className="scroll-top-button"
           >
-            <ArrowUp size={24} color="#262626" />
+            <ArrowUp size={24} color="#959595" />
           </button>
-          <h2 style={{
-            color: '#262626',
-            fontFamily: "'Bruno Ace SC', cursive",
-            fontSize: isMobile ? '1.5rem' : '7rem',
-            margin: '0 0 1rem 0',
-            textAlign: 'left',
-            letterSpacing: '0.05em',
-          }} className="footer-title-mobile">
-            LET'S CHAT
+          <h2 
+            style={{
+              color: '#959595',
+              fontFamily: "'Bruno Ace SC', cursive",
+              fontSize: isMobile ? '1.5rem' : '7rem',
+              margin: '0 0 1rem 0',
+              textAlign: 'left',
+              letterSpacing: '0.05em',
+              cursor: 'pointer'
+            }} 
+            className="footer-title-mobile"
+            onMouseEnter={startFooterHack}
+          >
+            {footerHackedText}
           </h2>
           <div style={{
             display: 'flex',
@@ -659,7 +810,7 @@ export default function Contact() {
           }}>
             <div className="status-dot"></div>
             <span style={{
-              color: '#262626',
+              color: '#959595',
               fontFamily: 'monospace',
               fontSize: '1rem',
             }}>Available</span>
@@ -679,12 +830,12 @@ export default function Contact() {
             }}>
               <div style={{
                 height: '1px',
-                backgroundColor: '#262626',
+                backgroundColor: '#959595',
                 width: '100%',
                 marginBottom: '1rem',
               }}></div>
               <h3 style={{
-                color: '#262626',
+                color: '#959595',
                 fontFamily: 'monospace',
                 fontSize: '1.2rem',
                 margin: '0.2rem 0',
@@ -695,15 +846,7 @@ export default function Contact() {
                 gap: '0.5rem',
               }}>
                 <a href="#" style={{
-                  color: '#262626',
-                  textDecoration: 'none',
-                  fontFamily: 'monospace',
-                  fontSize: '1rem',
-                  transition: 'opacity 0.2s',
-                  cursor: 'pointer',
-                }}>Instagram</a>
-                <a href="#" style={{
-                  color: '#262626',
+                  color: '#959595',
                   textDecoration: 'none',
                   fontFamily: 'monospace',
                   fontSize: '1rem',
@@ -722,12 +865,12 @@ export default function Contact() {
             }}>
               <div style={{
                 height: '1px',
-                backgroundColor: '#262626',
+                backgroundColor: '#959595',
                 width: '100%',
                 marginBottom: '1rem',
               }}></div>
               <h3 style={{
-                color: '#262626',
+                color: '#959595',
                 fontFamily: 'monospace',
                 fontSize: '1.2rem',
                 margin: '0.2rem 0',
@@ -737,21 +880,15 @@ export default function Contact() {
                 flexDirection: 'column',
                 gap: '0.5rem',
               }}>
-                <a href="#" style={{
-                  color: '#262626',
-                  textDecoration: 'none',
-                  fontFamily: 'monospace',
-                  fontSize: '1rem',
-                  transition: 'opacity 0.2s',
-                  cursor: 'pointer',
-                }}>Phone</a>
-                <a href="#" style={{
-                  color: '#262626',
-                  textDecoration: 'none',
-                  fontFamily: 'monospace',
-                  fontSize: '1rem',
-                  transition: 'opacity 0.2s',
-                  cursor: 'pointer',
+                <a 
+                  href="mailto:luc1708@hotmail.com" 
+                  style={{
+                    color: '#959595',
+                    textDecoration: 'none',
+                    fontFamily: 'monospace',
+                    fontSize: '1rem',
+                    transition: 'opacity 0.2s',
+                    cursor: 'pointer',
                 }}>Email</a>
               </div>
             </div>
