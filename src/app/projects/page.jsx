@@ -182,7 +182,7 @@ export default function Projects() {
           right: 0,
           bottom: 0,
           width: '2500px',
-          backgroundColor: 'rgba(0, 0, 0, 0.75)',
+          backgroundColor: 'rgba(0, 0, 0, 1)',
           backgroundImage: `
             linear-gradient(rgba(38, 38, 38, 0.3) 1px, transparent 1px),
             linear-gradient(90deg, rgba(38, 38, 38, 0.3) 1px, transparent 1px)
@@ -246,7 +246,6 @@ export default function Projects() {
             <ul className="menu-list">
               {[
                 { text: 'home', path: '/' },
-                { text: 'about', path: '/about' },
                 { text: 'projects', path: '/projects' },
                 { text: 'contact', path: '/contact' }
               ].map((item) => (
@@ -304,7 +303,7 @@ export default function Projects() {
         }} className="hide-scrollbar">
           <div style={{
             position: 'relative',
-            display: isMobile ? 'none' : 'block',
+            display: isMobile ? 'block' : 'block',
           }}>
             <Link href="/project1">
               <img 
@@ -312,8 +311,7 @@ export default function Projects() {
                 alt="Logo"
                 style={{
                   ...getProjectImageStyle(200, 300, 400, 400, isMobile),
-                  filter: isMobile ? 'brightness(50%)' : 'brightness(100%)',
-                  zIndex: 1000,
+                  marginBottom: isMobile ? '10px' : '0',
                 }}
                 className="first-project-image project-image"
                 onMouseEnter={!isMobile ? (e) => {
@@ -327,34 +325,37 @@ export default function Projects() {
                   e.currentTarget.nextElementSibling?.classList.remove('visible');
                 } : undefined}
               />
-              <div style={{
-                position: 'absolute',
-                top: '350px',
-                left: '300px',
-                transform: 'none',
-                width: '400px',
-                textAlign: 'center',
-                color: 'white',
-                zIndex: 1001,
-                opacity: 0,
-                transition: 'opacity 0.3s ease',
-                fontFamily: "'Bruno Ace SC', cursive",
-                display: isMobile ? 'none' : 'block',
-              }} className="hover-text">
-                <h2 style={{ fontSize: '2.5rem', margin: '0' }}>Project Titel</h2>
-                <p style={{ fontSize: '1.2rem', marginTop: '1rem' }}>Projectbeschrijving hier</p>
-              </div>
+              {!isMobile && (
+                <div style={{
+                  position: 'absolute',
+                  top: '350px',
+                  left: '300px',
+                  width: '400px',
+                  textAlign: 'center',
+                  color: 'white',
+                  zIndex: 1001,
+                  opacity: 0,
+                  transition: 'opacity 0.3s ease',
+                  fontFamily: "'Bruno Ace SC', cursive",
+                }} className="hover-text">
+                  <h2 style={{ fontSize: '2.5rem', margin: '0' }}>Project Titel</h2>
+                  <p style={{ fontSize: '1.2rem', marginTop: '1rem' }}>Projectbeschrijving hier</p>
+                </div>
+              )}
             </Link>
           </div>
 
           <div style={{
             position: 'relative',
-            display: isMobile ? 'none' : 'block',
+            display: isMobile ? 'block' : 'block',
           }}>
             <img 
               src="/afbeeldingen/eindhoven.png"
               alt="Logo"
-              style={getProjectImageStyle(700, 800, 300, 300, isMobile)}
+              style={{
+                ...getProjectImageStyle(700, 800, 300, 300, isMobile),
+                marginBottom: isMobile ? '10px' : '0',
+              }}
               className="second-project-image project-image"
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = 'scale(1.1)';
@@ -367,33 +368,36 @@ export default function Projects() {
                 e.currentTarget.nextElementSibling?.classList.remove('visible');
               }}
             />
-            <div style={{
-              position: isMobile ? 'relative' : 'absolute',
-              top: isMobile ? '0' : '800px',
-              left: isMobile ? '50%' : '800px',
-              transform: isMobile ? 'translateX(-50%)' : 'none',
-              width: isMobile ? '80vw' : '300px',
-              textAlign: 'center',
-              color: 'white',
-              zIndex: 1001,
-              opacity: 0,
-              transition: 'opacity 0.3s ease',
-              fontFamily: "'Bruno Ace SC', cursive",
-              marginTop: isMobile ? '10px' : '0',
-            }} className="hover-text">
-              <h2 style={{ fontSize: '2.5rem', margin: '0' }}>Project Titel 2</h2>
-              <p style={{ fontSize: '1.2rem', marginTop: '1rem' }}>Projectbeschrijving hier</p>
-            </div>
+            {!isMobile && (
+              <div style={{
+                position: 'absolute',
+                top: '800px',
+                left: '800px',
+                width: '300px',
+                textAlign: 'center',
+                color: 'white',
+                zIndex: 1001,
+                opacity: 0,
+                transition: 'opacity 0.3s ease',
+                fontFamily: "'Bruno Ace SC', cursive",
+              }} className="hover-text">
+                <h2 style={{ fontSize: '2.5rem', margin: '0' }}>Project Titel 2</h2>
+                <p style={{ fontSize: '1.2rem', marginTop: '1rem' }}>Projectbeschrijving hier</p>
+              </div>
+            )}
           </div>
 
           <div style={{
             position: 'relative',
-            display: isMobile ? 'none' : 'block',
+            display: isMobile ? 'block' : 'block',
           }}>
             <img 
               src="/afbeeldingen/eindhoven.png"
               alt="Logo"
-              style={getProjectImageStyle(300, 1500, 500, 500, isMobile)}
+              style={{
+                ...getProjectImageStyle(300, 1500, 500, 500, isMobile),
+                marginBottom: isMobile ? '10px' : '0',
+              }}
               className="third-project-image project-image"
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = 'scale(1.1)';
@@ -406,23 +410,23 @@ export default function Projects() {
                 e.currentTarget.nextElementSibling?.classList.remove('visible');
               }}
             />
-            <div style={{
-              position: isMobile ? 'relative' : 'absolute',
-              top: isMobile ? '0' : '400px',
-              left: isMobile ? '50%' : '1500px',
-              transform: isMobile ? 'translateX(-50%)' : 'none',
-              width: isMobile ? '80vw' : '500px',
-              textAlign: 'center',
-              color: 'white',
-              zIndex: 1001,
-              opacity: 0,
-              transition: 'opacity 0.3s ease',
-              fontFamily: "'Bruno Ace SC', cursive",
-              marginTop: isMobile ? '10px' : '0',
-            }} className="hover-text">
-              <h2 style={{ fontSize: '2.5rem', margin: '0' }}>Project Titel 3</h2>
-              <p style={{ fontSize: '1.2rem', marginTop: '1rem' }}>Projectbeschrijving hier</p>
-            </div>
+            {!isMobile && (
+              <div style={{
+                position: 'absolute',
+                top: '500px',
+                left: '1500px',
+                width: '500px',
+                textAlign: 'center',
+                color: 'white',
+                zIndex: 1001,
+                opacity: 0,
+                transition: 'opacity 0.3s ease',
+                fontFamily: "'Bruno Ace SC', cursive",
+              }} className="hover-text">
+                <h2 style={{ fontSize: '2.5rem', margin: '0' }}>Project Titel 3</h2>
+                <p style={{ fontSize: '1.2rem', marginTop: '1rem' }}>Projectbeschrijving hier</p>
+              </div>
+            )}
           </div>
 
           <div style={{
@@ -545,6 +549,34 @@ export default function Projects() {
                 left: 10%;
               }
             }
+
+            .menu-icon {
+              width: 30px;
+              height: 30px;
+              position: relative;
+              display: flex;
+              flex-direction: column;
+              justify-content: space-around;
+            }
+
+            .menu-icon .line {
+              width: 100%;
+              height: 2px;
+              background-color: white;
+              transition: all 0.3s ease;
+            }
+
+            .menu-icon.open .line:nth-child(1) {
+              transform: rotate(45deg) translate(7px, 7px);
+            }
+
+            .menu-icon.open .line:nth-child(2) {
+              opacity: 0;
+            }
+
+            .menu-icon.open .line:nth-child(3) {
+              transform: rotate(-45deg) translate(7px, -7px);
+            }
           `}</style>
         </div>
       </div>
@@ -554,7 +586,7 @@ export default function Projects() {
         backgroundColor: 'black',
         borderTop: '1px solid #959595',
         padding: '2rem 0',
-        marginTop: 'auto',
+        marginTop: '2rem',
         zIndex: 2,
         display: 'flex',
         justifyContent: 'center',

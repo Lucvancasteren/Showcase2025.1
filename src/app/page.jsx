@@ -993,7 +993,6 @@ export default function Home() {
             <ul className="menu-list">
               {[
                 { text: 'home', path: '/' },
-                { text: 'about', path: '/about' },
                 { text: 'projects', path: '/projects' },
                 { text: 'contact', path: '/contact' }
               ].map((item) => (

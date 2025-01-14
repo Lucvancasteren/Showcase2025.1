@@ -12,6 +12,7 @@ export default function Project1() {
   const [scrollPosition, setScrollPosition] = useState(0);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const [hackedTitle, setHackedTitle] = useState("PROJECT 1");
   
   const projectImages = [
     "/afbeeldingen/parallax1.png",
@@ -37,6 +38,27 @@ export default function Project1() {
 
   const previousImage = () => {
     setCurrentImageIndex((prev) => (prev - 1 + projectImages.length) % projectImages.length);
+  };
+
+  const startTitleHack = () => {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*';
+    let iterations = 0;
+    const maxIterations = 3;
+    
+    const hackInterval = setInterval(() => {
+      iterations++;
+      const randomText = Array("PROJECT 1".length)
+        .fill()
+        .map(() => characters[Math.floor(Math.random() * characters.length)])
+        .join('');
+      
+      setHackedTitle(randomText);
+      
+      if (iterations >= maxIterations) {
+        clearInterval(hackInterval);
+        setHackedTitle("PROJECT 1");
+      }
+    }, 50);
   };
 
   useEffect(() => {
@@ -130,7 +152,7 @@ export default function Project1() {
           top: "20px",
           left: "20px",
           backgroundColor: "transparent",
-          border: "2px solid #292929",
+          border: "2px solid #959595",
           borderRadius: "50%",
           width: "60px",
           height: "60px",
@@ -143,7 +165,7 @@ export default function Project1() {
         }} 
         className="back-button"
       >
-        <ArrowLeft size={40} color="#292929" />
+        <ArrowLeft size={40} color="#959595" />
       </button>
 
       <h1 
@@ -154,15 +176,16 @@ export default function Project1() {
           transform: 'translateX(-50%)',
           fontFamily: "'Bruno Ace SC', cursive",
           fontSize: '8rem',
-          color: '#292929',
+          color: '#959595',
           margin: 0,
           zIndex: 10,
           transition: 'all 0.3s ease',
           cursor: 'default',
         }} 
         className="project-title"
+        onMouseEnter={startTitleHack}
       >
-        PROJECT 1
+        {hackedTitle}
       </h1>
 
       <div 
@@ -180,7 +203,7 @@ export default function Project1() {
           justifyContent: 'center',
           alignItems: 'center',
           padding: '2rem',
-          color: '#ffffff'
+          color: '#959595'
         }}
       >
         <h2 className="project-description-title">
@@ -561,7 +584,7 @@ export default function Project1() {
                 style={{
                   padding: '0.8rem 1.5rem',
                   border: '2px solid #292929',
-                  color: '#ffffff',
+                  color: '#959595',
                   fontFamily: 'monospace',
                   fontSize: '1rem',
                   letterSpacing: '1px',
@@ -695,7 +718,7 @@ export default function Project1() {
             filter: `blur(${scrollPosition > 1300 ? '0' : '10px'})`,
           }}>
             <h3 style={{
-              color: '#ffffff',
+              color: '#959595',
               fontFamily: "'Bruno Ace SC', cursive",
               fontSize: '2.5rem',
               marginBottom: '2rem',
@@ -704,7 +727,7 @@ export default function Project1() {
               Project Details
             </h3>
             <div style={{
-              color: '#ffffff',
+              color: '#959595',
               fontFamily: 'monospace',
               fontSize: '1.1rem',
               lineHeight: '1.8',
@@ -738,7 +761,7 @@ export default function Project1() {
                   style={{
                     backgroundColor: 'transparent',
                     border: '2px solid #292929',
-                    color: '#ffffff',
+                    color: '#959595',
                     padding: '1rem 2rem',
                     fontSize: '1.2rem',
                     fontFamily: "'Bruno Ace SC', cursive",
@@ -784,7 +807,6 @@ export default function Project1() {
             <div className="fullscreen-menu">
               <ul className="menu-list">
                 <li className="menu-item" onClick={() => router.push('/')}>home</li>
-                <li className="menu-item" onClick={() => router.push('/about')}>about</li>
                 <li className="menu-item" onClick={() => {
                   router.push('/projects');
                   setIsMenuOpen(false);
@@ -829,7 +851,7 @@ export default function Project1() {
               right: '1rem',
               bottom: '1rem',
               background: 'transparent',
-              border: '2px solid #262626',
+              border: '2px solid #959595',
               borderRadius: '50%',
               width: '50px',
               height: '50px',
@@ -842,12 +864,12 @@ export default function Project1() {
             }}
             className="scroll-top-button"
           >
-            <ArrowUp size={24} color="#262626" />
+            <ArrowUp size={24} color="#959595" />
           </button>
           <h2 
             onClick={() => router.push('/contact')}
             style={{
-              color: '#262626',
+              color: '#959595',
               fontFamily: "'Bruno Ace SC', cursive",
               fontSize: isMobile ? '1.5rem' : '7rem',
               margin: '0 0 1rem 0',
@@ -868,7 +890,7 @@ export default function Project1() {
           }}>
             <div className="status-dot"></div>
             <span style={{
-              color: '#262626',
+              color: '#959595',
               fontFamily: 'monospace',
               fontSize: '1rem',
             }}>Available</span>
@@ -888,12 +910,12 @@ export default function Project1() {
             }}>
               <div style={{
                 height: '1px',
-                backgroundColor: '#262626',
+                backgroundColor: '#959595',
                 width: '100%',
                 marginBottom: '1rem',
               }}></div>
               <h3 style={{
-                color: '#262626',
+                color: '#959595',
                 fontFamily: 'monospace',
                 fontSize: '1.2rem',
                 margin: '0.2rem 0',
@@ -903,23 +925,8 @@ export default function Project1() {
                 flexDirection: 'column',
                 gap: '0.5rem',
               }}>
-                <a 
-                  href="https://www.instagram.com/luc_vancasteren" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  style={{
-                    color: '#262626',
-                    textDecoration: 'none',
-                    fontFamily: 'monospace',
-                    fontSize: '1rem',
-                    transition: 'opacity 0.2s',
-                    cursor: 'pointer',
-                  }}
-                >
-                  Instagram
-                </a>
                 <a href="#" style={{
-                  color: '#262626',
+                  color: '#959595',
                   textDecoration: 'none',
                   fontFamily: 'monospace',
                   fontSize: '1rem',
@@ -938,12 +945,12 @@ export default function Project1() {
             }}>
               <div style={{
                 height: '1px',
-                backgroundColor: '#262626',
+                backgroundColor: '#959595',
                 width: '100%',
                 marginBottom: '1rem',
               }}></div>
               <h3 style={{
-                color: '#262626',
+                color: '#959595',
                 fontFamily: 'monospace',
                 fontSize: '1.2rem',
                 margin: '0.2rem 0',
@@ -953,18 +960,10 @@ export default function Project1() {
                 flexDirection: 'column',
                 gap: '0.5rem',
               }}>
-                <a href="#" style={{
-                  color: '#262626',
-                  textDecoration: 'none',
-                  fontFamily: 'monospace',
-                  fontSize: '1rem',
-                  transition: 'opacity 0.2s',
-                  cursor: 'pointer',
-                }}>Phone</a>
                 <a 
                   href="mailto:luc1708@hotmail.com" 
                   style={{
-                    color: '#262626',
+                    color: '#959595',
                     textDecoration: 'none',
                     fontFamily: 'monospace',
                     fontSize: '1rem',

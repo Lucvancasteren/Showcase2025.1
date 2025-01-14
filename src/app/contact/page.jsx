@@ -257,7 +257,7 @@ export default function Contact() {
             fontSize: '14px',
             fontFamily: "'Bruno Ace SC', cursive",
           }}>
-            email me
+            email
           </div>
           <div style={{
             position: 'absolute',
@@ -375,7 +375,6 @@ export default function Contact() {
               <ul className="menu-list">
                 {[
                   { text: 'home', path: '/' },
-                  { text: 'about', path: '/about' },
                   { text: 'projects', path: '/projects' },
                   { text: 'contact', path: '/contact' }
                 ].map((item) => (
@@ -429,7 +428,7 @@ export default function Contact() {
               top: 50%;
               left: 50%;
               transform: translate(-50%, -50%);
-              color: white;
+              color: #959595;
               font-size: 2rem;
               font-family: 'Bruno Ace SC', cursive;
               opacity: 0;
@@ -845,14 +844,21 @@ export default function Contact() {
                 flexDirection: 'column',
                 gap: '0.5rem',
               }}>
-                <a href="#" style={{
-                  color: '#959595',
-                  textDecoration: 'none',
-                  fontFamily: 'monospace',
-                  fontSize: '1rem',
-                  transition: 'opacity 0.2s',
-                  cursor: 'pointer',
-                }}>LinkedIn</a>
+                <a 
+                  href="https://nl.linkedin.com/in/luc-van-casteren-bb0823345" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  style={{
+                    color: '#959595',
+                    textDecoration: 'none',
+                    fontFamily: 'monospace',
+                    fontSize: '1rem',
+                    transition: 'opacity 0.2s',
+                    cursor: 'pointer',
+                  }}
+                >
+                  LinkedIn
+                </a>
               </div>
             </div>
             <div style={{ width: '50px' }}></div>
