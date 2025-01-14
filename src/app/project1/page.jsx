@@ -12,7 +12,7 @@ export default function Project1() {
   const [scrollPosition, setScrollPosition] = useState(0);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
-  const [hackedTitle, setHackedTitle] = useState("PROJECT 1");
+  const [hackedTitle, setHackedTitle] = useState("UPENDO");
   
   const projectImages = [
     "/afbeeldingen/parallax1.png",
@@ -47,7 +47,7 @@ export default function Project1() {
     
     const hackInterval = setInterval(() => {
       iterations++;
-      const randomText = Array("PROJECT 1".length)
+      const randomText = Array("UPENDO".length)
         .fill()
         .map(() => characters[Math.floor(Math.random() * characters.length)])
         .join('');
@@ -56,7 +56,7 @@ export default function Project1() {
       
       if (iterations >= maxIterations) {
         clearInterval(hackInterval);
-        setHackedTitle("PROJECT 1");
+        setHackedTitle("UPENDO");
       }
     }, 50);
   };
@@ -229,7 +229,7 @@ export default function Project1() {
         }}
       >
         <img 
-          src="/afbeeldingen/eindhoven.png"
+          src="/afbeeldingen/upendo-portfolio.png"
           alt="Project afbeelding"
           style={{
             width: '100%',

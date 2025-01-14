@@ -153,6 +153,7 @@ export default function Projects() {
     transition: 'all 0.3s ease',
     cursor: 'pointer',
     filter: 'brightness(100%)',
+    border: '2px solid #959595',
   });
 
   return (
@@ -307,7 +308,7 @@ export default function Projects() {
           }}>
             <Link href="/project1">
               <img 
-                src="/afbeeldingen/eindhoven.png"
+                src="/afbeeldingen/upendo-portfolio.png"
                 alt="Logo"
                 style={{
                   ...getProjectImageStyle(200, 300, 400, 400, isMobile),
@@ -316,7 +317,7 @@ export default function Projects() {
                 className="first-project-image project-image"
                 onMouseEnter={!isMobile ? (e) => {
                   e.currentTarget.style.transform = 'scale(1.1)';
-                  e.currentTarget.style.filter = 'brightness(20%)';
+                  e.currentTarget.style.filter = 'brightness(10%)';
                   e.currentTarget.nextElementSibling?.classList.add('visible');
                 } : undefined}
                 onMouseLeave={!isMobile ? (e) => {
@@ -332,14 +333,14 @@ export default function Projects() {
                   left: '300px',
                   width: '400px',
                   textAlign: 'center',
-                  color: 'white',
+                  color: '#959595',
                   zIndex: 1001,
                   opacity: 0,
                   transition: 'opacity 0.3s ease',
                   fontFamily: "'Bruno Ace SC', cursive",
                 }} className="hover-text">
-                  <h2 style={{ fontSize: '2.5rem', margin: '0' }}>Project Titel</h2>
-                  <p style={{ fontSize: '1.2rem', marginTop: '1rem' }}>Projectbeschrijving hier</p>
+                  <h2 style={{ fontSize: '2.5rem', margin: '0' }}>Upendo</h2>
+                  <p style={{ fontSize: '1.2rem', marginTop: '1rem' }}>Headless CMS Project</p>
                 </div>
               )}
             </Link>
@@ -350,7 +351,7 @@ export default function Projects() {
             display: isMobile ? 'block' : 'block',
           }}>
             <img 
-              src="/afbeeldingen/eindhoven.png"
+              src="/afbeeldingen/trendfocus-portfolio.png"
               alt="Logo"
               style={{
                 ...getProjectImageStyle(700, 800, 300, 300, isMobile),
