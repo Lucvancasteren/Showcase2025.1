@@ -12,7 +12,7 @@ export default function Project1() {
   const [scrollPosition, setScrollPosition] = useState(0);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
-  const [hackedTitle, setHackedTitle] = useState("UPENDO");
+  const [hackedTitle, setHackedTitle] = useState("PersonalProject");
   
   const projectImages = [
     "/afbeeldingen/parallax1.png",
@@ -47,7 +47,7 @@ export default function Project1() {
     
     const hackInterval = setInterval(() => {
       iterations++;
-      const randomText = Array("UPENDO".length)
+      const randomText = Array("PersonalProject".length)
         .fill()
         .map(() => characters[Math.floor(Math.random() * characters.length)])
         .join('');
@@ -56,7 +56,7 @@ export default function Project1() {
       
       if (iterations >= maxIterations) {
         clearInterval(hackInterval);
-        setHackedTitle("UPENDO");
+        setHackedTitle("PersonalProject");
       }
     }, 50);
   };
@@ -202,7 +202,7 @@ export default function Project1() {
           left: '50%',
           transform: 'translateX(-50%)',
           fontFamily: "'Bruno Ace SC', cursive",
-          fontSize: '8rem',
+          fontSize: '6rem',
           color: '#959595',
           margin: 0,
           zIndex: 10,
@@ -256,7 +256,7 @@ export default function Project1() {
         }}
       >
         <img 
-          src="/afbeeldingen/upendo-portfolio.png"
+          src="/afbeeldingen/personal-project.png"
           alt="Project afbeelding"
           style={{
             width: '100%',
@@ -350,7 +350,7 @@ export default function Project1() {
 
         @media (max-width: 768px) {
           .project-title {
-            font-size:1.5rem !important;
+            font-size: 1.2rem !important;
             top: 2rem !important;
           }
         }

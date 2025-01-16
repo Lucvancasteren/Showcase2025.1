@@ -1154,6 +1154,7 @@ export default function Home() {
           backgroundColor: 'transparent'
         }} className="footer-content-mobile">
           <h2 
+            onClick={() => router.push('/contact')}
             style={{
               color: '#959595',
               fontFamily: "'Bruno Ace SC', cursive",
@@ -1162,7 +1163,8 @@ export default function Home() {
               textAlign: 'left',
               letterSpacing: '0.05em',
               whiteSpace: 'nowrap',
-              cursor: 'default'
+              cursor: 'pointer',
+              transition: 'opacity 0.3s ease'
             }} 
             className="footer-title-mobile"
             onMouseEnter={startFooterHack}
@@ -1315,7 +1317,8 @@ export default function Home() {
               style={{
                 ...styles.scrollTopButton,
                 right: '1rem',
-                left: 'auto'
+                left: 'auto',
+                display: isMobile ? 'none' : 'flex'
               }}
             >
               <ArrowUp 
@@ -1369,10 +1372,17 @@ export default function Home() {
         .menu-icon.open .line:last-child {
           transform: translateY(-9px) rotate(-45deg);
         }
+
+        @media (max-width: 768px) {
+          .scroll-top-button {
+            display: none !important;
+          }
+        }
       `}</style>
     </>
   );
 }
-  
+
+
 
 

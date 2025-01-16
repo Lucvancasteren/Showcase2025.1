@@ -167,7 +167,7 @@ export default function Contact() {
             width: '20px',
             height: '20px',
             backgroundColor: 'transparent',
-            border: '2px solid #292929',
+            border: '2px solid #959595',
             borderRadius: '50%',
             position: 'fixed',
             pointerEvents: 'none',
@@ -582,7 +582,18 @@ export default function Contact() {
 
               /* Verberg de scroll-top knop op mobiel */
               .scroll-top-button {
-                display: none !important;
+                display: flex !important;
+                width: 40px !important;
+                height: 40px !important;
+                right: 0.5rem !important;
+                bottom: 0.5rem !important;
+                position: fixed !important;
+                z-index: 1000 !important;
+              }
+
+              .scroll-top-button svg {
+                width: 20px !important;
+                height: 20px !important;
               }
 
               .footer-content-mobile > * {
@@ -620,6 +631,24 @@ export default function Contact() {
               /* Behoud de gap tussen de kolommen */
               .footer-content-mobile .lineGap {
                 width: 50px !important;
+              }
+
+              /* Verwijder of commentarieer deze regel uit */
+              /* .scroll-top-button {
+                display: none !important;
+              } */
+
+              /* Voeg deze nieuwe stijlen toe voor mobiele weergave */
+              .scroll-top-button {
+                width: 40px !important;
+                height: 40px !important;
+                right: 0.5rem !important;
+                bottom: 0.5rem !important;
+              }
+
+              .scroll-top-button svg {
+                width: 20px !important;
+                height: 20px !important;
               }
             }
 
@@ -735,6 +764,43 @@ export default function Contact() {
             .menu-icon.open .line:last-child {
               transform: translateY(-9px) rotate(-45deg);
             }
+
+            /* Pas specifiek de email link in de footer aan om overeen te komen met LinkedIn */
+            .footer-content-mobile .contact a[href^="mailto"] {
+              font-size: 1rem !important; /* Zelfde grootte als LinkedIn link */
+            }
+
+            @media (max-width: 768px) {
+              .footer-content-mobile .contact a[href^="mailto"] {
+                font-size: 12px !important; /* Zelfde grootte als LinkedIn op mobiel */
+              }
+            }
+
+            /* Specifieke styling voor footer links */
+            .footer-content-mobile .contact a[href^="mailto"],
+            .footer-content-mobile a {
+              font-size: 1rem !important;
+            }
+
+            @media (max-width: 768px) {
+              .footer-content-mobile .contact a[href^="mailto"],
+              .footer-content-mobile a {
+                font-size: 14px !important;
+              }
+              
+              /* Extra specifieke selector voor email link */
+              .footer-content-mobile div[style*="flex-direction: column"] a[href^="mailto"] {
+                font-size: 14px !important;
+                margin-left: 0 !important; /* Verwijder eventuele linkermarge */
+                padding-left: 0 !important; /* Verwijder eventuele linkerpadding */
+              }
+
+              /* Zorg ervoor dat de container ook geen extra padding/margin heeft */
+              .footer-content-mobile .contact {
+                padding-left: 0 !important;
+                margin-left: 0 !important;
+              }
+            }
           `}</style>
         </div>
       </div>
@@ -803,16 +869,42 @@ export default function Contact() {
           <div style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '0.5rem',
-            marginTop: '1rem',
+            justifyContent: 'space-between',
+            width: '100%',
+            marginTop: '-1rem',
             marginBottom: '1rem',
           }}>
-            <div className="status-dot"></div>
-            <span style={{
-              color: '#959595',
-              fontFamily: 'monospace',
-              fontSize: '1rem',
-            }}>Available</span>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+            }}>
+              <div className="status-dot"></div>
+              <span style={{
+                color: '#959595',
+                fontFamily: 'monospace',
+                fontSize: '1rem',
+              }}>Available</span>
+            </div>
+            
+            <button
+              onClick={scrollToTop}
+              style={{
+                background: 'transparent',
+                border: '2px solid #959595',
+                borderRadius: '50%',
+                width: '50px',
+                height: '50px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+              }}
+              className="scroll-top-button"
+            >
+              <ArrowUp size={24} color="#959595" />
+            </button>
           </div>
           <div style={{
             display: 'flex',

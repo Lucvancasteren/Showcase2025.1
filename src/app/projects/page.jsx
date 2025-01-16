@@ -166,7 +166,7 @@ export default function Projects() {
           width: isHovering ? '50px' : '20px',
           height: isHovering ? '50px' : '20px',
           backgroundColor: 'transparent',
-          border: '2px solid #292929',
+          border: '2px solid #959595',
           borderRadius: '50%',
           transform: 'translate(-50%, -50%)',
           transition: 'width 0.3s, height 0.3s',
@@ -285,13 +285,13 @@ export default function Projects() {
         )}
 
         <div style={{
-          height: '100vh',
+          height: isMobile ? '100vh' : '120vh',
           width: '100%',
           position: 'relative',
           backgroundColor: '#000000',
-          overflowX: 'auto',
+          overflowX: isMobile ? 'hidden' : 'auto',
           overflowY: 'auto',
-          minWidth: '100vw',
+          minWidth: isMobile ? '100%' : '100vw',
           maxWidth: '2500px',
           msOverflowStyle: 'none',
           scrollbarWidth: 'none',
@@ -350,84 +350,88 @@ export default function Projects() {
             position: 'relative',
             display: isMobile ? 'block' : 'block',
           }}>
-            <img 
-              src="/afbeeldingen/trendfocus-portfolio.png"
-              alt="Logo"
-              style={{
-                ...getProjectImageStyle(700, 800, 300, 300, isMobile),
-                marginBottom: isMobile ? '10px' : '0',
-              }}
-              className="second-project-image project-image"
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'scale(1.1)';
-                e.currentTarget.style.filter = 'brightness(20%)';
-                e.currentTarget.nextElementSibling?.classList.add('visible');
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'scale(1)';
-                e.currentTarget.style.filter = 'brightness(100%)';
-                e.currentTarget.nextElementSibling?.classList.remove('visible');
-              }}
-            />
-            {!isMobile && (
-              <div style={{
-                position: 'absolute',
-                top: '800px',
-                left: '800px',
-                width: '300px',
-                textAlign: 'center',
-                color: 'white',
-                zIndex: 1001,
-                opacity: 0,
-                transition: 'opacity 0.3s ease',
-                fontFamily: "'Bruno Ace SC', cursive",
-              }} className="hover-text">
-                <h2 style={{ fontSize: '2.5rem', margin: '0' }}>Project Titel 2</h2>
-                <p style={{ fontSize: '1.2rem', marginTop: '1rem' }}>Projectbeschrijving hier</p>
-              </div>
-            )}
+            <Link href="/project2">
+              <img 
+                src="/afbeeldingen/trendfocus-portfolio.png"
+                alt="Logo"
+                style={{
+                  ...getProjectImageStyle(700, 800, 300, 300, isMobile),
+                  marginBottom: isMobile ? '10px' : '0',
+                }}
+                className="second-project-image project-image"
+                onMouseEnter={!isMobile ? (e) => {
+                  e.currentTarget.style.transform = 'scale(1.1)';
+                  e.currentTarget.style.filter = 'brightness(10%)';
+                  e.currentTarget.nextElementSibling?.classList.add('visible');
+                } : undefined}
+                onMouseLeave={!isMobile ? (e) => {
+                  e.currentTarget.style.transform = 'scale(1)';
+                  e.currentTarget.style.filter = 'brightness(100%)';
+                  e.currentTarget.nextElementSibling?.classList.remove('visible');
+                } : undefined}
+              />
+              {!isMobile && (
+                <div style={{
+                  position: 'absolute',
+                  top: '800px',
+                  left: '800px',
+                  width: '300px',
+                  textAlign: 'center',
+                  color: '#959595',
+                  zIndex: 1001,
+                  opacity: 0,
+                  transition: 'opacity 0.3s ease',
+                  fontFamily: "'Bruno Ace SC', cursive",
+                }} className="hover-text">
+                  <h2 style={{ fontSize: '2.5rem', margin: '0' }}>Trendfocus</h2>
+                  <p style={{ fontSize: '1.2rem', marginTop: '1rem' }}>E-commerce Project</p>
+                </div>
+              )}
+            </Link>
           </div>
 
           <div style={{
             position: 'relative',
             display: isMobile ? 'block' : 'block',
           }}>
-            <img 
-              src="/afbeeldingen/eindhoven.png"
-              alt="Logo"
-              style={{
-                ...getProjectImageStyle(300, 1500, 500, 500, isMobile),
-                marginBottom: isMobile ? '10px' : '0',
-              }}
-              className="third-project-image project-image"
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'scale(1.1)';
-                e.currentTarget.style.filter = 'brightness(20%)';
-                e.currentTarget.nextElementSibling?.classList.add('visible');
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'scale(1)';
-                e.currentTarget.style.filter = 'brightness(100%)';
-                e.currentTarget.nextElementSibling?.classList.remove('visible');
-              }}
-            />
-            {!isMobile && (
-              <div style={{
-                position: 'absolute',
-                top: '500px',
-                left: '1500px',
-                width: '500px',
-                textAlign: 'center',
-                color: 'white',
-                zIndex: 1001,
-                opacity: 0,
-                transition: 'opacity 0.3s ease',
-                fontFamily: "'Bruno Ace SC', cursive",
-              }} className="hover-text">
-                <h2 style={{ fontSize: '2.5rem', margin: '0' }}>Project Titel 3</h2>
-                <p style={{ fontSize: '1.2rem', marginTop: '1rem' }}>Projectbeschrijving hier</p>
-              </div>
-            )}
+            <Link href="/project3">
+              <img 
+                src="/afbeeldingen/personal-project.png"
+                alt="Logo"
+                style={{
+                  ...getProjectImageStyle(300, 1500, 500, 500, isMobile),
+                  marginBottom: isMobile ? '10px' : '0',
+                }}
+                className="third-project-image project-image"
+                onMouseEnter={!isMobile ? (e) => {
+                  e.currentTarget.style.transform = 'scale(1.1)';
+                  e.currentTarget.style.filter = 'brightness(10%)';
+                  e.currentTarget.nextElementSibling?.classList.add('visible');
+                } : undefined}
+                onMouseLeave={!isMobile ? (e) => {
+                  e.currentTarget.style.transform = 'scale(1)';
+                  e.currentTarget.style.filter = 'brightness(100%)';
+                  e.currentTarget.nextElementSibling?.classList.remove('visible');
+                } : undefined}
+              />
+              {!isMobile && (
+                <div style={{
+                  position: 'absolute',
+                  top: '500px',
+                  left: '1500px',
+                  width: '500px',
+                  textAlign: 'center',
+                  color: '#959595',
+                  zIndex: 1001,
+                  opacity: 0,
+                  transition: 'opacity 0.3s ease',
+                  fontFamily: "'Bruno Ace SC', cursive",
+                }} className="hover-text">
+                  <h2 style={{ fontSize: '2.5rem', margin: '0' }}>Project Titel 3</h2>
+                  <p style={{ fontSize: '1.2rem', marginTop: '1rem' }}>Projectbeschrijving hier</p>
+                </div>
+              )}
+            </Link>
           </div>
 
           <div style={{
@@ -647,40 +651,6 @@ export default function Projects() {
                 fontSize: '1rem',
               }}>Available</span>
             </div>
-            
-            {isMobile && (
-              <button
-                onClick={scrollToTop}
-                className="scroll-top-button"
-                style={{
-                  position: 'relative',
-                  background: 'transparent',
-                  border: '2px solid #959595',
-                  borderRadius: '50%',
-                  width: '50px',
-                  height: '50px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  cursor: 'pointer',
-                  transition: 'all 0.3s ease',
-                  overflow: 'hidden',
-                  paddingRight: '2rem',
-                }}
-              >
-                <ArrowUp 
-                  size={24} 
-                  color="#959595"
-                  className="arrow-icon"
-                  style={{
-                    position: 'absolute',
-                    left: '50%',
-                    top: '50%',
-                    transform: 'translate(-50%, -50%)'
-                  }}
-                />
-              </button>
-            )}
           </div>
           
           <div style={{
